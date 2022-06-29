@@ -33,7 +33,7 @@ public class MoneyCommand {
                         account = services.findByName(other.get().getName());
                     }
 
-                    sender.sendMessage(other.map(player -> player.getName() + " possui: §").orElse("§eVocê possui: §a") + account.getBalance() + " coins");
+                    sender.sendMessage(other.map(player -> player.getName() + " possui: §a").orElse("§eVocê possui: §a") + account.getBalance() + " coins");
 
                 }).register("money", "coins", "moedas");
     }

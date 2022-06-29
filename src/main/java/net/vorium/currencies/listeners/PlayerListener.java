@@ -35,7 +35,6 @@ public class PlayerListener implements Listener {
                 account = new Account(player.getName());
                 repository.insertOne(account);
                 services.registerAccount(account);
-
             }
 
             player.sendMessage(time - System.currentTimeMillis() + "ms");
@@ -50,7 +49,7 @@ public class PlayerListener implements Listener {
 
         Schedulers.async().execute(() -> {
             Account account = repository.findByName(player.getName());
-            if (account == null) return;
+            if (account == null || !account.isToSync()) return;
 
             repository.insertOne(account);
             account.setToSync(false);

@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 group 'net.vorium'
@@ -10,7 +10,6 @@ tasks.build.dependsOn('shadowJar')
 
 repositories {
     mavenCentral()
-    jcenter()
 
     maven { url = 'https://jitpack.io'}
     maven { url = 'https://repo.lucko.me'}
@@ -21,7 +20,8 @@ dependencies {
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7.1'
     compileOnly 'me.lucko:helper:5.6.10'
 
-    implementation 'com.github.HenryFabio:sql-provider:9561f20fd250c960263cc97298d9e4d89b02a089'
+    implementation 'com.github.HenryFabio:sql-provider:main-SNAPSHOT'
+    implementation 'com.github.SaiintBrisson.command-framework:bukkit:1.2.0'
 
     def lombmok = "org.projectlombok:lombok:1.18.16"
     compileOnly lombmok
@@ -29,7 +29,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveName("${project.name}")
+    archiveName("${project.name}-${project.version}.jar")
 }
 
 compileJava {
