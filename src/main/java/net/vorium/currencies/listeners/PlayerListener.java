@@ -26,8 +26,6 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        long time = System.currentTimeMillis();
-
         Schedulers.async().execute(() -> {
             Account account = repository.findByName(player.getName());
 
@@ -36,8 +34,6 @@ public class PlayerListener implements Listener {
                 repository.insertOne(account);
                 services.registerAccount(account);
             }
-
-            player.sendMessage(time - System.currentTimeMillis() + "ms");
         });
     }
 
@@ -45,16 +41,12 @@ public class PlayerListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        long time = System.currentTimeMillis();
-
         Schedulers.async().execute(() -> {
             Account account = repository.findByName(player.getName());
             if (account == null || !account.isToSync()) return;
 
-            repository.insertOne(account);
+            repository.update(account);
             account.setToSync(false);
-
-            Bukkit.getConsoleSender().sendMessage(time - System.currentTimeMillis() + "ms");
         });
     }
 }

@@ -47,4 +47,13 @@ public class AccountRepo {
                     statement.set(2, account.getBalance());
                 });
     }
+
+    public void update(Account account) {
+        executor.updateQuery(String.format(
+                "REPLACE INTO %s VALUES(?, ?)", table),
+                statment -> {
+                    statment.set(1, account.getName());
+                    statment.set(2, account.getBalance());
+                });
+    }
 }

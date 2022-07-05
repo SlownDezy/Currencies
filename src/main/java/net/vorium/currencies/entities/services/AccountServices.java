@@ -1,5 +1,6 @@
 package net.vorium.currencies.entities.services;
 
+import net.luckperms.api.model.user.User;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.entities.Account;
 
@@ -7,8 +8,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AccountServices {
-
-    private final Comparator<Account> COMPARATOR = Comparator.comparingDouble(Account::getBalance);
 
     private static final Map<String, Account> accounts = new HashMap<>();
 
@@ -35,14 +34,11 @@ public class AccountServices {
         return accounts
                 .values()
                 .stream()
-                .sorted(COMPARATOR)
+                .sorted(Comparator.comparing(Account::getBalance).reversed())
                 .limit(limit)
                 .collect(Collectors.toList());
     }
-
     public Collection<Account> getAccounts() {
         return accounts.values();
     }
-
-
 }

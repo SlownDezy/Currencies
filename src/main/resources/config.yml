@@ -3,3 +3,7 @@ mysql:
   username: ""
   password: ""
   database: ""
+
+rankings:
+  1: ""
+  2: ""

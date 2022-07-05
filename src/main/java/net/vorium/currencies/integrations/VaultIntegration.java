@@ -80,8 +80,10 @@ public class VaultIntegration implements Economy {
     @Override
     public double getBalance(String name) {
         Account account = services.findByName(name);
-        if (account == null) return 0;
-        return account.getBalance();
+
+        if (account != null) return account.getBalance();
+
+        return 0.0;
     }
 
     @Override

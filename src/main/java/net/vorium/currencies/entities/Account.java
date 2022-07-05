@@ -1,6 +1,12 @@
 package net.vorium.currencies.entities;
 
 import lombok.Data;
+import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.query.QueryOptions;
+import net.vorium.currencies.Main;
+
+import java.text.DecimalFormat;
 
 @Data
 public class Account {
@@ -28,5 +34,21 @@ public class Account {
     public void set(double amount) {
         balance = amount;
         toSync = true;
+    }
+
+    public String getFormatedBalance() {
+        return new DecimalFormat("#,###.#").format(balance);
+    }
+
+    public String getPrefix() {
+        User user = Main.getInstance().getLuckPerms().getUserManager().getUser(name);
+
+        if (user == null) return "";
+
+        CachedMetaData metaData = user.getCachedData().getMetaData(QueryOptions.defaultContextualOptions());
+
+        if (metaData.getPrefix() == null) return "§7";
+
+        return metaData.getPrefix().replace("&", "§");
     }
 }
