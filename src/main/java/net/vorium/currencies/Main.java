@@ -99,7 +99,8 @@ public class Main extends JavaPlugin {
                 .registerSub(new PayCommand(this))
                 .registerSub(new AddCommand(this))
                 .registerSub(new RemoveCommand(this))
-                .registerSub(new SetCommand(this));
+                .registerSub(new SetCommand(this))
+                .registerSub(new SetNPCCommand(this));
         service.registerCommands();
     }
 
