@@ -11,6 +11,7 @@ import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.command.subcommands.*;
 import net.vorium.currencies.entities.Account;
 import net.vorium.currencies.entities.services.AccountServices;
+import net.vorium.currencies.entities.services.RankingServices;
 import net.vorium.currencies.integrations.VaultIntegration;
 import net.vorium.currencies.listeners.PlayerListener;
 import net.vorium.currencies.storarge.DatabaseFactory;
@@ -27,9 +28,12 @@ public class Main extends JavaPlugin {
 
     private static Main instance;
     private LuckPerms luckPerms;
+
     private SQLConnector connector;
     private AccountRepo repository;
-    private AccountServices services;
+
+    private AccountServices accountServices;
+    private RankingServices rankingServices;
 
     @Override
     public void onEnable() {
@@ -38,7 +42,10 @@ public class Main extends JavaPlugin {
         saveDefaultConfig();
         setupDatabase();
 
-        services = new AccountServices(this);
+        accountServices = new AccountServices(this);
+        rankingServices = new RankingServices(this);
+        rankingServices.load();
+
         setupEconomy();
 
         setupSyncTask();
@@ -50,9 +57,11 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (Account account : services.getAccounts()) {
+        for (Account account : accountServices.getAccounts()) {
             if (account.isToSync()) repository.insertOne(account);
         }
+
+        rankingServices.unload();
     }
 
     public static Main getInstance() {
@@ -96,12 +105,14 @@ public class Main extends JavaPlugin {
 
     public void setupSyncTask() {
         Schedulers.sync().runRepeating(() -> {
-            for (Account account : services.getAccounts()) {
+            for (Account account : accountServices.getAccounts()) {
                 if (account.isToSync()) {
                     repository.update(account);
                     Bukkit.getConsoleSender().sendMessage("Currencies sync completed!");
                 }
             }
+
+            rankingServices.update();
         }, 0L, 300L);
     }
 }

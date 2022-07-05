@@ -8,12 +8,16 @@ import org.bukkit.entity.Player;
 
 public class SetNPCCommand extends MoneyCommand {
 
+    private Main plugin;
+
     public SetNPCCommand(Main plugin) {
         super(plugin);
+        this.plugin = plugin;
     }
 
     @Command(name = "setnpc", aliases = { "settop" }, desc = "Coloque um NPC do ranking de coins.")
     public void setNPCCommand(@Sender Player player, int position) {
-
+        plugin.getRankingServices().create(position, player.getLocation());
+        player.sendMessage("§aNPC criado com sucesso!");
     }
 }
