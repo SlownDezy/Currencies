@@ -1,5 +1,4 @@
 package net.vorium.currencies.entities;
-package net.vorium.currencies.entities;
 
 import lombok.Getter;
 import me.lucko.helper.hologram.Hologram;
