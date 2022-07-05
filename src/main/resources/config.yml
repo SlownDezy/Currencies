@@ -5,5 +5,5 @@ mysql:
   database: ""
 
 rankings:
-  1: ""
-  2: ""
+  VIP:
+    1:
