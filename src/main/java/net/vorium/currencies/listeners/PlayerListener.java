@@ -18,7 +18,7 @@ public class PlayerListener implements Listener {
     private final AccountRepo repository;
 
     public PlayerListener(Main plugin) {
-        services = plugin.getServices();
+        services = plugin.getAccountServices();
         repository = plugin.getRepository();
     }
 

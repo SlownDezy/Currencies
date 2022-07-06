@@ -19,7 +19,7 @@ public class VaultIntegration implements Economy {
 
     public VaultIntegration(Main plugin) {
         this.plugin = plugin;
-        this.services = plugin.getServices();
+        this.services = plugin.getAccountServices();
     }
 
     @Override

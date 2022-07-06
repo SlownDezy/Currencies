@@ -16,7 +16,7 @@ public class MoneyCommand {
     public final DecimalFormat format = new DecimalFormat("#,###.#");
 
     public MoneyCommand(Main plugin) {
-        this.services = plugin.getServices();
+        this.services = plugin.getAccountServices();
     }
 
     @Command(name = "money", aliases = { "coins", "moedas"}, desc = "Veja quantas moedas um jogador possui.")

@@ -6,3 +6,15 @@ mysql:
 
 rankings:
   VIP:
+    1:
+      x: 0.5
+      y: 0.0
+      z: 0.5
+      yaw: 0.0
+      pitch: 0.0
+    2:
+      x: 0.5
+      y: 0.0
+      z: 0.5
+      yaw: 0.0
+      pitch: 0.0
