@@ -33,7 +33,6 @@ public class Main extends JavaPlugin {
     private AccountRepo repository;
 
     private AccountServices accountServices;
-    private RankingServices rankingServices;
 
     @Override
     public void onEnable() {
@@ -43,8 +42,6 @@ public class Main extends JavaPlugin {
         setupDatabase();
 
         accountServices = new AccountServices(this);
-        rankingServices = new RankingServices(this);
-        rankingServices.load();
 
         setupEconomy();
 
@@ -60,8 +57,6 @@ public class Main extends JavaPlugin {
         for (Account account : accountServices.getAccounts()) {
             if (account.isToSync()) repository.insertOne(account);
         }
-
-        rankingServices.unload();
     }
 
     public static Main getInstance() {
@@ -99,8 +94,7 @@ public class Main extends JavaPlugin {
                 .registerSub(new PayCommand(this))
                 .registerSub(new AddCommand(this))
                 .registerSub(new RemoveCommand(this))
-                .registerSub(new SetCommand(this))
-                .registerSub(new SetNPCCommand(this));
+                .registerSub(new SetCommand(this));
         service.registerCommands();
     }
 
@@ -112,8 +106,6 @@ public class Main extends JavaPlugin {
                     Bukkit.getConsoleSender().sendMessage("Currencies sync completed!");
                 }
             }
-
-            rankingServices.update();
         }, 0L, 300L);
     }
 }

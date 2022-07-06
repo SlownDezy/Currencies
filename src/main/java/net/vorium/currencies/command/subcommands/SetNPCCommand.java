@@ -17,7 +17,7 @@ public class SetNPCCommand extends MoneyCommand {
 
     @Command(name = "setnpc", aliases = { "settop" }, desc = "Coloque um NPC do ranking de coins.")
     public void setNPCCommand(@Sender Player player, int position) {
-        plugin.getRankingServices().create(position, player.getLocation());
+        //plugin.getRankingServices().create(position, player.getLocation());
         player.sendMessage("§aNPC criado com sucesso!");
     }
 }
