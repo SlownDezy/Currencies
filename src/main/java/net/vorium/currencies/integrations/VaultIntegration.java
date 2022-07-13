@@ -81,9 +81,9 @@ public class VaultIntegration implements Economy {
     public double getBalance(String name) {
         Account account = services.findByName(name);
 
-        if (account != null) return account.getBalance();
+        if (account == null) return 0;
 
-        return 0.0;
+        return account.getBalance();
     }
 
     @Override
@@ -130,9 +130,9 @@ public class VaultIntegration implements Economy {
         double newBalance = balance - amount;
 
         if (newBalance <= 0) newBalance = 0;
-        account.withdraw(newBalance);
+        account.withdraw(amount);
 
-        return new EconomyResponse(balance, newBalance, EconomyResponse.ResponseType.FAILURE, null);
+        return new EconomyResponse(amount, newBalance, EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -155,10 +155,8 @@ public class VaultIntegration implements Economy {
         Account account = services.findByName(name);
         if (account == null) return new EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Jogador não encontrado!");
 
-        double balance = account.getBalance();
-        double newBalance = balance + amount;
-        account.deposit(newBalance);
-        return new EconomyResponse(balance, newBalance, EconomyResponse.ResponseType.FAILURE, null);
+        account.deposit(amount);
+        return new EconomyResponse(amount, account.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override

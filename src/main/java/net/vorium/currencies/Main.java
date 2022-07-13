@@ -11,7 +11,6 @@ import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.command.subcommands.*;
 import net.vorium.currencies.entities.Account;
 import net.vorium.currencies.entities.services.AccountServices;
-import net.vorium.currencies.entities.services.RankingServices;
 import net.vorium.currencies.integrations.VaultIntegration;
 import net.vorium.currencies.listeners.PlayerListener;
 import net.vorium.currencies.storarge.DatabaseFactory;
@@ -20,8 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.logging.Logger;
 
 @Getter
 public class Main extends JavaPlugin {
@@ -101,10 +98,9 @@ public class Main extends JavaPlugin {
     public void setupSyncTask() {
         Schedulers.sync().runRepeating(() -> {
             for (Account account : accountServices.getAccounts()) {
-                if (account.isToSync()) {
-                    repository.update(account);
-                    Bukkit.getConsoleSender().sendMessage("Currencies sync completed!");
-                }
+                if (!account.isToSync()) return;
+
+                repository.update(account);
             }
         }, 0L, 300L);
     }

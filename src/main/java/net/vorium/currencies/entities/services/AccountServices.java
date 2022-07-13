@@ -1,15 +1,15 @@
 package net.vorium.currencies.entities.services;
 
-import net.luckperms.api.model.user.User;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.entities.Account;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class AccountServices {
 
-    private static final Map<String, Account> accounts = new HashMap<>();
+    private static final Map<String, Account> accounts = new ConcurrentHashMap<>();
 
     public AccountServices(Main plugin) {
         for (Account account : plugin.getRepository().getAll()) {
