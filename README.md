@@ -1,0 +1,2 @@
+# Currencies
+A economy plugin
