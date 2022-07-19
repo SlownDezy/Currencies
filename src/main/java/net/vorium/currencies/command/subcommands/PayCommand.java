@@ -16,7 +16,7 @@ public class PayCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "money.pay", aliases = { "enviar", "pagar" }, usage = "<player> <quantia>", target = CommandTarget.PLAYER)
+    @Command(name = "money.pay", aliases = { "enviar", "pagar" }, target = CommandTarget.PLAYER)
     public void payCommand(Context<Player> player, Player target, int amount) {
         Account account = services.findByName(player.getSender().getName());
         if (account == null) return;

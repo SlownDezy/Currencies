@@ -16,7 +16,7 @@ public class SetCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "money.set", aliases = { "setar", "definir" }, usage = "<player> <quantia>", permission = "currencies.admin")
+    @Command(name = "money.set", aliases = { "setar", "definir" }, permission = "currencies.admin")
     public void Command(Context<CommandSender> sender, Player target, int amount) {
         Account targetAccount = services.findByName(target.getName());
 

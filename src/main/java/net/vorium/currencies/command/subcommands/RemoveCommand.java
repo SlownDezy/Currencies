@@ -16,7 +16,7 @@ public class RemoveCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "money.withdraw", aliases = { "remover", "remove" }, usage = "<player> <quantia>", permission = "currencies.admin")
+    @Command(name = "money.withdraw", aliases = { "remover", "remove" }, permission = "currencies.admin")
     public void Command(Context<CommandSender> sender, Player target, int amount) {
         Account targetAccount = services.findByName(target.getName());
 

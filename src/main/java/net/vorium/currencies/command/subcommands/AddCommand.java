@@ -16,7 +16,7 @@ public class AddCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "money.add", aliases = { "adicionar" }, usage = "<player> <quantia>", permission = "currencies.admin")
+    @Command(name = "money.add", aliases = { "adicionar" }, permission = "currencies.admin")
     public void addCommand(Context<CommandSender> sender, Player target, int amount) {
         Account targetAccount = services.findByName(target.getName());
 

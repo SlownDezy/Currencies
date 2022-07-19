@@ -19,7 +19,7 @@ public class TopCommand extends MoneyCommand {
 
         int rank = 1;
         for (Account account : services.getRanking(10)) {
-            sender.sendMessage("§f  " + rank + ". "
+            sender.sendMessage("§f  " + rank + ". §7"
                     + account.getPrefix()
                     + account.getName()
                     + " §7(" + account.getFormatedBalance() + ")");

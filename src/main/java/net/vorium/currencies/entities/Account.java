@@ -47,7 +47,7 @@ public class Account {
 
         CachedMetaData metaData = user.getCachedData().getMetaData(QueryOptions.defaultContextualOptions());
 
-        if (metaData.getPrefix() == null) return "§7";
+        if (metaData.getPrefix() == null) return "";
 
         return metaData.getPrefix().replace("&", "§");
     }
