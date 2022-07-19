@@ -4,6 +4,8 @@ import com.henryfabio.sqlprovider.connector.SQLConnector;
 import lombok.Getter;
 import me.lucko.helper.Schedulers;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
+import me.saiintbrisson.minecraft.command.message.MessageHolder;
+import me.saiintbrisson.minecraft.command.message.MessageType;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import net.vorium.currencies.command.MoneyCommand;
@@ -92,6 +94,12 @@ public class Main extends JavaPlugin {
                 new RemoveCommand(this),
                 new PayCommand(this),
                 new AddCommand(this));
+
+        MessageHolder holder = frame.getMessageHolder();
+        holder.setMessage(MessageType.INCORRECT_USAGE, "§cUse: ");
+        holder.setMessage(MessageType.INCORRECT_TARGET, "§cNenhum jogador encontrado.");
+        holder.setMessage(MessageType.NO_PERMISSION, "§cVocê não possui permissão para executar este comando.");
+        holder.setMessage(MessageType.ERROR, "§cOcorreu um erro enquanto o comando estava sendo executado!");
     }
 
     public void setupSyncTask() {

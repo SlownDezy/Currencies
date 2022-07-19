@@ -1,7 +1,6 @@
 package net.vorium.currencies.command;
 
 import me.saiintbrisson.minecraft.command.annotation.Command;
-import me.saiintbrisson.minecraft.command.annotation.Optional;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.entities.Account;
 import net.vorium.currencies.entities.services.AccountServices;
@@ -20,7 +19,7 @@ public class MoneyCommand {
     }
 
     @Command(name = "money", aliases = { "coins", "moedas"})
-    public void moneyCommand(Player sender, @Optional String target) {
+    public void moneyCommand(Player sender, String target) {
         Account account = services.findByName(target);
 
         if (account == null) {
