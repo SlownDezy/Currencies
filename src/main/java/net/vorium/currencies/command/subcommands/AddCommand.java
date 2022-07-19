@@ -1,8 +1,7 @@
 package net.vorium.currencies.command.subcommands;
 
-import com.jonahseguin.drink.annotation.Command;
-import com.jonahseguin.drink.annotation.Require;
-import com.jonahseguin.drink.annotation.Sender;
+import me.saiintbrisson.minecraft.command.annotation.Command;
+import me.saiintbrisson.minecraft.command.command.Context;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.entities.Account;
@@ -14,9 +13,8 @@ public class AddCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "add", aliases = { "adicionar" }, desc = "Adicione moedas para um jogador.", usage = "<player> <quantia>")
-    @Require("currencies.admin")
-    public void addCommand(@Sender CommandSender sender, String targetName, int amount) {
+    @Command(name = "money.add", aliases = { "adicionar" }, usage = "<player> <quantia>", permission = "currencies.admin")
+    public void addCommand(Context<CommandSender> sender, String targetName, int amount) {
         Account targetAccount = services.findByName(targetName);
 
         if (targetAccount == null) {

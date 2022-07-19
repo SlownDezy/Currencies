@@ -1,7 +1,8 @@
 package net.vorium.currencies.command.subcommands;
 
-import com.jonahseguin.drink.annotation.Command;
-import com.jonahseguin.drink.annotation.Sender;
+import me.saiintbrisson.minecraft.command.annotation.Command;
+import me.saiintbrisson.minecraft.command.command.Context;
+import me.saiintbrisson.minecraft.command.target.CommandTarget;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.entities.Account;
@@ -14,9 +15,9 @@ public class PayCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "pay", aliases = { "enviar", "pagar" }, desc = "Envie moedas para um jogador.", usage = "<player> <quantia>")
-    public void payCommand(@Sender Player player, String targetName, int amount) {
-        Account account = services.findByName(player.getName());
+    @Command(name = "money.pay", aliases = { "enviar", "pagar" }, usage = "<player> <quantia>", target = CommandTarget.PLAYER)
+    public void payCommand(Context<Player> player, String targetName, int amount) {
+        Account account = services.findByName(player.getSender().getName());
         if (account == null) return;
 
         Account targetAccount = services.findByName(targetName);

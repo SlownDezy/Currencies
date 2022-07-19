@@ -1,7 +1,7 @@
 package net.vorium.currencies.command.subcommands;
 
-import com.jonahseguin.drink.annotation.Command;
-import com.jonahseguin.drink.annotation.Sender;
+import me.saiintbrisson.minecraft.command.annotation.Command;
+import me.saiintbrisson.minecraft.command.command.Context;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.entities.Account;
@@ -13,8 +13,8 @@ public class TopCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "top", aliases = "ranking", desc = "Veja os 10 jogadores com mais moedas do servidor.")
-    public void topCommand(@Sender CommandSender sender) {
+    @Command(name = "money.top", aliases = "ranking")
+    public void topCommand(Context<CommandSender> sender) {
         sender.sendMessage( new String[] { "", "§2 Top 10 jogadores mais ricos", ""});
 
         int rank = 1;

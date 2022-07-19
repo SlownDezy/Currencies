@@ -1,10 +1,9 @@
 package net.vorium.currencies;
 
 import com.henryfabio.sqlprovider.connector.SQLConnector;
-import com.jonahseguin.drink.CommandService;
-import com.jonahseguin.drink.Drink;
 import lombok.Getter;
 import me.lucko.helper.Schedulers;
+import me.saiintbrisson.bukkit.command.BukkitFrame;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import net.vorium.currencies.command.MoneyCommand;
@@ -85,14 +84,14 @@ public class Main extends JavaPlugin {
     }
 
     public void setupCommands() {
-        CommandService service = Drink.get(this);
-        service.register(new MoneyCommand(this), "money", "coins", "coin")
-                .registerSub(new TopCommand(this))
-                .registerSub(new PayCommand(this))
-                .registerSub(new AddCommand(this))
-                .registerSub(new RemoveCommand(this))
-                .registerSub(new SetCommand(this));
-        service.registerCommands();
+        BukkitFrame frame = new BukkitFrame(this);
+        frame.registerCommands(
+                new MoneyCommand(this),
+                new TopCommand(this),
+                new SetCommand(this),
+                new RemoveCommand(this),
+                new PayCommand(this),
+                new AddCommand(this));
     }
 
     public void setupSyncTask() {

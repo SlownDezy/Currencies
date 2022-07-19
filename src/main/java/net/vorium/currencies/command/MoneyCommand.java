@@ -1,7 +1,7 @@
 package net.vorium.currencies.command;
 
-import com.jonahseguin.drink.annotation.Command;
-import com.jonahseguin.drink.annotation.OptArg;
+import me.saiintbrisson.minecraft.command.annotation.Command;
+import me.saiintbrisson.minecraft.command.annotation.Optional;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.entities.Account;
 import net.vorium.currencies.entities.services.AccountServices;
@@ -19,8 +19,8 @@ public class MoneyCommand {
         this.services = plugin.getAccountServices();
     }
 
-    @Command(name = "money", aliases = { "coins", "moedas"}, desc = "Veja quantas moedas um jogador possui.")
-    public void moneyCommand(Player sender, @OptArg String target) {
+    @Command(name = "money", aliases = { "coins", "moedas"})
+    public void moneyCommand(Player sender, @Optional String target) {
         Account account = services.findByName(target);
 
         if (account == null) {

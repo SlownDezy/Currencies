@@ -1,7 +1,7 @@
 package net.vorium.currencies.command.subcommands;
 
-import com.jonahseguin.drink.annotation.Command;
-import com.jonahseguin.drink.annotation.Sender;
+import me.saiintbrisson.minecraft.command.annotation.Command;
+import me.saiintbrisson.minecraft.command.command.Context;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.command.MoneyCommand;
 import org.bukkit.entity.Player;
@@ -15,8 +15,8 @@ public class SetNPCCommand extends MoneyCommand {
         this.plugin = plugin;
     }
 
-    @Command(name = "setnpc", aliases = { "settop" }, desc = "Coloque um NPC do ranking de coins.")
-    public void setNPCCommand(@Sender Player player, int position) {
+    @Command(name = "money.setnpc", aliases = { "settop" })
+    public void setNPCCommand(Context<Player> player, int position) {
         //plugin.getRankingServices().create(position, player.getLocation());
         player.sendMessage("§aNPC criado com sucesso!");
     }

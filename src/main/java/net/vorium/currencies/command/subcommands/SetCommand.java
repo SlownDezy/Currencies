@@ -1,13 +1,11 @@
 package net.vorium.currencies.command.subcommands;
 
-import com.jonahseguin.drink.annotation.Command;
-import com.jonahseguin.drink.annotation.Require;
-import com.jonahseguin.drink.annotation.Sender;
+import me.saiintbrisson.minecraft.command.annotation.Command;
+import me.saiintbrisson.minecraft.command.command.Context;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.entities.Account;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class SetCommand extends MoneyCommand {
 
@@ -15,9 +13,8 @@ public class SetCommand extends MoneyCommand {
         super(plugin);
     }
 
-    @Command(name = "set", aliases = { "setar", "definir" }, desc = "Defina quantas moedas um jogador possui.", usage = "<player> <quantia>")
-    @Require("currencies.admin")
-    public void Command(@Sender CommandSender sender, String targetName, int amount) {
+    @Command(name = "money.set", aliases = { "setar", "definir" }, usage = "<player> <quantia>", permission = "currencies.admin")
+    public void Command(Context<CommandSender> sender, String targetName, int amount) {
         Account targetAccount = services.findByName(targetName);
 
         if (targetAccount == null) {
