@@ -7,15 +7,20 @@ import org.bukkit.event.HandlerList;
 
 public class MoneyUpdateEvent extends Event implements Cancellable {
 
+    private static final HandlerList handlerList = new HandlerList();
+
     private Player player;
     private final UpdateType type;
     private final double amount;
     private final Player target;
 
+    private boolean isCancelled;
+
     public MoneyUpdateEvent(Player target, UpdateType type, double amount) {
         this.target = target;
         this.type = type;
         this.amount = amount;
+        this.isCancelled = false;
     }
 
     public MoneyUpdateEvent(Player player, Player target, UpdateType type, double amount) {
@@ -23,21 +28,22 @@ public class MoneyUpdateEvent extends Event implements Cancellable {
         this.target = target;
         this.type = type;
         this.amount = amount;
+        this.isCancelled = false;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlerList;
     }
 
     @Override
     public boolean isCancelled() {
-        return false;
+        return isCancelled;
     }
 
     @Override
-    public void setCancelled(boolean b) {
-
+    public void setCancelled(boolean isCancelled) {
+        this.isCancelled = isCancelled;
     }
 
     public Player getPlayer() {
