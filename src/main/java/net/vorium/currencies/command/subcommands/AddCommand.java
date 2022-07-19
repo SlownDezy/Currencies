@@ -5,7 +5,10 @@ import me.saiintbrisson.minecraft.command.command.Context;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.entities.Account;
+import net.vorium.currencies.events.MoneyUpdateEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class AddCommand extends MoneyCommand {
 
@@ -14,8 +17,8 @@ public class AddCommand extends MoneyCommand {
     }
 
     @Command(name = "money.add", aliases = { "adicionar" }, usage = "<player> <quantia>", permission = "currencies.admin")
-    public void addCommand(Context<CommandSender> sender, String targetName, int amount) {
-        Account targetAccount = services.findByName(targetName);
+    public void addCommand(Context<CommandSender> sender, Player target, int amount) {
+        Account targetAccount = services.findByName(target.getName());
 
         if (targetAccount == null) {
             sender.sendMessage("§cNão foi possível encontrar este jogador.");
@@ -28,7 +31,7 @@ public class AddCommand extends MoneyCommand {
         }
 
         targetAccount.deposit(amount);
-
+        Bukkit.getPluginManager().callEvent(new MoneyUpdateEvent(target, MoneyUpdateEvent.UpdateType.SET, amount));
         sender.sendMessage("§eVocê adicionou §a" + format.format(amount) + " §ecoins na conta de " + targetAccount.getPrefix() + targetAccount.getName());
     }
 }

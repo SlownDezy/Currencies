@@ -6,6 +6,7 @@ import me.saiintbrisson.minecraft.command.target.CommandTarget;
 import net.vorium.currencies.Main;
 import net.vorium.currencies.command.MoneyCommand;
 import net.vorium.currencies.entities.Account;
+import net.vorium.currencies.events.MoneyUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,11 +17,11 @@ public class PayCommand extends MoneyCommand {
     }
 
     @Command(name = "money.pay", aliases = { "enviar", "pagar" }, usage = "<player> <quantia>", target = CommandTarget.PLAYER)
-    public void payCommand(Context<Player> player, String targetName, int amount) {
+    public void payCommand(Context<Player> player, Player target, int amount) {
         Account account = services.findByName(player.getSender().getName());
         if (account == null) return;
 
-        Account targetAccount = services.findByName(targetName);
+        Account targetAccount = services.findByName(target.getName());
         if (targetAccount == null) return;
 
         if (account.equals(targetAccount)) {
@@ -35,10 +36,8 @@ public class PayCommand extends MoneyCommand {
 
         account.withdraw(amount);
         targetAccount.deposit(amount);
-
+        Bukkit.getPluginManager().callEvent(new MoneyUpdateEvent(player.getSender(), target, MoneyUpdateEvent.UpdateType.SET, amount));
         player.sendMessage("§eVocê enviou §a" + format.format(amount) + " §ecoins para " + targetAccount.getPrefix() + targetAccount.getName());
-
-        Player target = Bukkit.getPlayer(targetName);
         if (target.isOnline()) target.sendMessage("§eVocê recebeu §a" + format.format(amount) + " §ecoins de " + account.getPrefix() + account.getName());
 
     }

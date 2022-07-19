@@ -7,13 +7,13 @@ import org.bukkit.event.HandlerList;
 
 public class MoneyUpdateEvent extends Event implements Cancellable {
 
-    private final Player player;
+    private Player player;
     private final UpdateType type;
     private final double amount;
-    private Player target;
+    private final Player target;
 
-    public MoneyUpdateEvent(Player player, UpdateType type, double amount) {
-        this.player = player;
+    public MoneyUpdateEvent(Player target, UpdateType type, double amount) {
+        this.target = target;
         this.type = type;
         this.amount = amount;
     }
