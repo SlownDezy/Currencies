@@ -1,12 +1,13 @@
 package io.github.slowndezy.currencies.command.subcommands;
 
+import io.github.slowndezy.currencies.CurrenciesPlugin;
+import io.github.slowndezy.currencies.command.MoneyCommand;
+import io.github.slowndezy.currencies.config.MessagesConfig;
 import io.github.slowndezy.currencies.entities.Account;
+import io.github.slowndezy.currencies.events.MoneyUpdateEvent;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
-import io.github.slowndezy.currencies.CurrenciesPlugin;
-import io.github.slowndezy.currencies.command.MoneyCommand;
-import io.github.slowndezy.currencies.events.MoneyUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,15 +23,23 @@ public class PayCommand extends MoneyCommand {
         if (account == null) return;
 
         Account targetAccount = services.findByName(target.getName());
-        if (targetAccount == null) return;
+        if (targetAccount == null) {
+            player.sendMessage(MessagesConfig.get(MessagesConfig::incorrectTagert));
+            return;
+        }
 
         if (account.equals(targetAccount)) {
-            player.sendMessage("§cVocê não pode enviar moedas para si mesmo.");
+            player.sendMessage(MessagesConfig.get(MessagesConfig::yourselfError));
             return;
         }
 
         if (amount <= 0) {
-            player.sendMessage("§cInsira um número válido.");
+            player.sendMessage(MessagesConfig.get(MessagesConfig::incorrectValue));
+            return;
+        }
+
+        if (account.getBalance() <= amount) {
+            player.sendMessage(MessagesConfig.get(MessagesConfig::insufficientAmount));
             return;
         }
 
@@ -41,8 +50,12 @@ public class PayCommand extends MoneyCommand {
             account.withdraw(amount);
             targetAccount.deposit(amount);
 
-            player.sendMessage("§eVocê enviou §a" + format.format(amount) + " §ecoins para " + targetAccount.getName());
-            if (target.isOnline()) target.sendMessage("§eVocê recebeu §a" + format.format(amount) + " §ecoins de " + account.getName());
+            player.sendMessage(MessagesConfig.get(MessagesConfig::paid)
+                    .replace("{player}", targetAccount.getName())
+                    .replace("{coins}", String.valueOf(amount)));
+            if (target.isOnline()) target.sendMessage(MessagesConfig.get(MessagesConfig::received)
+                    .replace("{player}", targetAccount.getName())
+                    .replace("{coins}", String.valueOf(amount)));
         }
     }
 }

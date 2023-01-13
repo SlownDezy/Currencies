@@ -5,6 +5,7 @@ import io.github.slowndezy.currencies.command.subcommands.*;
 import io.github.slowndezy.currencies.entities.Account;
 import io.github.slowndezy.currencies.entities.services.AccountServices;
 import io.github.slowndezy.currencies.integrations.VaultIntegration;
+import io.github.slowndezy.currencies.listeners.PlayerListener;
 import io.github.slowndezy.currencies.storarge.Database;
 import io.github.slowndezy.currencies.storarge.dao.AccountDao;
 import lombok.Getter;
@@ -12,7 +13,6 @@ import me.saiintbrisson.bukkit.command.BukkitFrame;
 import me.saiintbrisson.minecraft.command.message.MessageHolder;
 import me.saiintbrisson.minecraft.command.message.MessageType;
 import net.milkbowl.vault.economy.Economy;
-import io.github.slowndezy.currencies.listeners.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.ServicePriority;
@@ -78,10 +78,10 @@ public class CurrenciesPlugin extends JavaPlugin {
                 new SetCommand(this),
                 new RemoveCommand(this),
                 new PayCommand(this),
+                new HelpCommand(),
                 new AddCommand(this));
 
         MessageHolder holder = frame.getMessageHolder();
-        holder.setMessage(MessageType.INCORRECT_USAGE, "§cUse: {usage}");
         holder.setMessage(MessageType.INCORRECT_TARGET, "§cNenhum jogador encontrado.");
         holder.setMessage(MessageType.NO_PERMISSION, "§cVocê não possui permissão para executar este comando.");
         holder.setMessage(MessageType.ERROR, "§cOcorreu um erro enquanto o comando estava sendo executado!");

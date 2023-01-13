@@ -6,3 +6,49 @@ mysql:
   table: "currencies"
 
 messages:
+  incorrect-target: "&cNenhum jogador encontrado."
+  incorrect-usage: "&cComando incorreto use: {usage}"
+  incorrect-value: "&cInsira um valor válido."
+  no-permission: "&cVocê não possui permissão."
+  error: "&cOcorreu um erro durante a execução do comando."
+  help-command:
+    - ""
+    - "  &6&LCURRENCIES &8- &7Lista de Comandos"
+    - ""
+    - " &6/money [jogador] &8- &fVeja quantas moedas você ou alguém possui."
+    - " &6/money enviar <jogador> <quantia> &8- &fEnvie moedas para outros jogadors."
+    - " &6/money top &8- &fVeja os 10 jogadores mais ricos do servidor."
+    - " &6/money ajuda &8- &fVeja esta mensagem."
+    - ""
+  help-admin-command:
+    - ""
+    - "  &6&LCURRENCIES &8- &7Lista de Comandos"
+    - ""
+    - " &6/money [jogador] &8- &fVeja quantas moedas você ou alguém possui."
+    - " &6/money enviar <jogador> <quantia> &8- &fEnvie moedas para outros jogadors."
+    - " &6/money top &8- &fVeja os 10 jogadores mais ricos do servidor."
+    - " &6/money ajuda &8- &fVeja esta mensagem."
+    - " &6/money adicionar <jogador> <quantia> &8- &fAdicione moedas para um jogador."
+    - " &6/money setar <jogador> <quantia> &8- &fDefina quantas moedas um jogador possui."
+    - " &6/money remover <jogador> <quantia> &8- &fRetire moedas de um jogador."
+    - ""
+  money-command: "&e{player} possui: &a{coins} moedas"
+  money-pay-command:
+    yourself-error: "&cVocê não pode enviar moedas para si mesmo."
+    insufficient: "&cVocê não possui moedas suficiente."
+    paid: "&eVocê enviou §a{coins} &emoedas para {player}"
+    received: "&eVocê recebeu §a{coins} &emoedas de {player}"
+  money-add-command: "&eVocê adicionou &a{coins} &emoedas para {player}"
+  money-set-command: "&eVocê definiu &a{coins} &emoedas para {player}"
+  money-withdraw-command: "&eVocê removeu &a{coins} &emoedas de {player}"
+  money-top-command:
+    max-in-top: 10
+    header:
+      - ""
+      - "&2 Top 10 jogadores mais ricos"
+      - ""
+    ranking-format: "&f  {position}. &e{player} &7({coins})}"
+    footer:
+      - ""
+      - "&fEste ranking está sempre atualizado!"
+      - ""
