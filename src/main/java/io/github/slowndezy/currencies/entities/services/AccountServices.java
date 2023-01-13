@@ -1,7 +1,7 @@
-package net.vorium.currencies.entities.services;
+package io.github.slowndezy.currencies.entities.services;
 
-import net.vorium.currencies.Main;
-import net.vorium.currencies.entities.Account;
+import io.github.slowndezy.currencies.CurrenciesPlugin;
+import io.github.slowndezy.currencies.entities.Account;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,10 +11,13 @@ public class AccountServices {
 
     private static final Map<String, Account> accounts = new ConcurrentHashMap<>();
 
-    public AccountServices(Main plugin) {
-        for (Account account : plugin.getRepository().getAll()) {
-            registerAccount(account);
-        }
+    public AccountServices(CurrenciesPlugin plugin) {
+        plugin.getAccountDao().getAll().thenAccept(accounts -> {
+            for (Account account : accounts) {
+                registerAccount(account);
+            }
+        });
+
     }
 
     public void registerAccount(Account account) {

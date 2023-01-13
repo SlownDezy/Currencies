@@ -1,18 +1,18 @@
-package net.vorium.currencies.command.subcommands;
+package io.github.slowndezy.currencies.command.subcommands;
 
+import io.github.slowndezy.currencies.entities.Account;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
-import net.vorium.currencies.Main;
-import net.vorium.currencies.command.MoneyCommand;
-import net.vorium.currencies.entities.Account;
-import net.vorium.currencies.events.MoneyUpdateEvent;
+import io.github.slowndezy.currencies.CurrenciesPlugin;
+import io.github.slowndezy.currencies.command.MoneyCommand;
+import io.github.slowndezy.currencies.events.MoneyUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PayCommand extends MoneyCommand {
 
-    public PayCommand(Main plugin) {
+    public PayCommand(CurrenciesPlugin plugin) {
         super(plugin);
     }
 
@@ -34,11 +34,15 @@ public class PayCommand extends MoneyCommand {
             return;
         }
 
-        account.withdraw(amount);
-        targetAccount.deposit(amount);
-        Bukkit.getPluginManager().callEvent(new MoneyUpdateEvent(player.getSender(), target, MoneyUpdateEvent.UpdateType.SET, amount));
-        player.sendMessage("§eVocê enviou §a" + format.format(amount) + " §ecoins para " + targetAccount.getPrefix() + targetAccount.getName());
-        if (target.isOnline()) target.sendMessage("§eVocê recebeu §a" + format.format(amount) + " §ecoins de " + account.getPrefix() + account.getName());
+        MoneyUpdateEvent moneyUpdateEvent = new MoneyUpdateEvent(target, MoneyUpdateEvent.UpdateType.PAY, amount);
+        Bukkit.getPluginManager().callEvent(moneyUpdateEvent);
 
+        if (!moneyUpdateEvent.isCancelled()) {
+            account.withdraw(amount);
+            targetAccount.deposit(amount);
+
+            player.sendMessage("§eVocê enviou §a" + format.format(amount) + " §ecoins para " + targetAccount.getName());
+            if (target.isOnline()) target.sendMessage("§eVocê recebeu §a" + format.format(amount) + " §ecoins de " + account.getName());
+        }
     }
 }

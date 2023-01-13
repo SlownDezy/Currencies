@@ -1,4 +1,4 @@
-package net.vorium.currencies.events;
+package io.github.slowndezy.currencies.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -63,6 +63,7 @@ public class MoneyUpdateEvent extends Event implements Cancellable {
     }
 
     public enum UpdateType {
+        ADD,
         SET,
         PAY,
         WITHDRAW;

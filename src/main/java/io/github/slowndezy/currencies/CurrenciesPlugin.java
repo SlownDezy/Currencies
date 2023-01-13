@@ -1,64 +1,51 @@
-package net.vorium.currencies;
+package io.github.slowndezy.currencies;
 
-import com.henryfabio.sqlprovider.connector.SQLConnector;
+import io.github.slowndezy.currencies.command.MoneyCommand;
+import io.github.slowndezy.currencies.command.subcommands.*;
+import io.github.slowndezy.currencies.entities.Account;
+import io.github.slowndezy.currencies.entities.services.AccountServices;
+import io.github.slowndezy.currencies.integrations.VaultIntegration;
+import io.github.slowndezy.currencies.storarge.Database;
+import io.github.slowndezy.currencies.storarge.dao.AccountDao;
 import lombok.Getter;
-import me.lucko.helper.Schedulers;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
 import me.saiintbrisson.minecraft.command.message.MessageHolder;
 import me.saiintbrisson.minecraft.command.message.MessageType;
-import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
-import net.vorium.currencies.command.MoneyCommand;
-import net.vorium.currencies.command.subcommands.*;
-import net.vorium.currencies.entities.Account;
-import net.vorium.currencies.entities.services.AccountServices;
-import net.vorium.currencies.integrations.VaultIntegration;
-import net.vorium.currencies.listeners.PlayerListener;
-import net.vorium.currencies.storarge.DatabaseFactory;
-import net.vorium.currencies.storarge.dao.AccountRepo;
+import io.github.slowndezy.currencies.listeners.PlayerListener;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
-public class Main extends JavaPlugin {
+public class CurrenciesPlugin extends JavaPlugin {
 
-    private static Main instance;
-    private LuckPerms luckPerms;
-
-    private SQLConnector connector;
-    private AccountRepo repository;
-
+    private Database database;
+    private AccountDao accountDao;
     private AccountServices accountServices;
 
     @Override
     public void onEnable() {
-        instance = this;
-
         saveDefaultConfig();
         setupDatabase();
 
         accountServices = new AccountServices(this);
 
         setupEconomy();
-
         setupSyncTask();
-        setupLuckPerms();
+        setupCommands();
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        setupCommands();
     }
 
     @Override
     public void onDisable() {
         for (Account account : accountServices.getAccounts()) {
-            if (account.isToSync()) repository.insertOne(account);
+            if (account.isToSync()) accountDao.insert(account);
         }
-    }
 
-    public static Main getInstance() {
-        return instance;
+        database.close();
     }
 
     public void setupEconomy() {
@@ -70,19 +57,17 @@ public class Main extends JavaPlugin {
     }
 
     public void setupDatabase() {
-        connector = DatabaseFactory.createConnection(getConfig().getConfigurationSection("mysql"));
-        repository = new AccountRepo(this);
-        repository.createTable();
-    }
+        ConfigurationSection section = getConfig().getConfigurationSection("mysql");
+        database = new Database(
+                section.getString("address"),
+                section.getString("username"),
+                section.getString("password"),
+                section.getString("database"),
+                section.getString("table"));
+        database.initialize();
 
-    public void setupLuckPerms() {
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider == null) {
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        luckPerms = provider.getProvider();
+        accountDao = new AccountDao(this);
+        accountDao.createTable();
     }
 
     public void setupCommands() {
@@ -103,11 +88,11 @@ public class Main extends JavaPlugin {
     }
 
     public void setupSyncTask() {
-        Schedulers.sync().runRepeating(() -> {
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Account account : accountServices.getAccounts()) {
                 if (!account.isToSync()) return;
 
-                repository.update(account);
+                accountDao.update(account);
             }
         }, 0L, 300L);
     }

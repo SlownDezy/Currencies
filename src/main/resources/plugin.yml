@@ -1,3 +1,5 @@
 name: Currencies
-main: net.vorium.currencies.Main
+main: io.github.slowndezy.currencies.CurrenciesPlugin
 version: 1.0
+depend:
+  - Vault

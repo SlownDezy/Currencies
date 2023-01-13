@@ -1,15 +1,16 @@
-package net.vorium.currencies.command.subcommands;
+package io.github.slowndezy.currencies.command.subcommands;
 
+import io.github.slowndezy.currencies.entities.Account;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
-import net.vorium.currencies.Main;
-import net.vorium.currencies.command.MoneyCommand;
-import net.vorium.currencies.entities.Account;
+import io.github.slowndezy.currencies.CurrenciesPlugin;
+import io.github.slowndezy.currencies.command.MoneyCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class TopCommand extends MoneyCommand {
 
-    public TopCommand(Main plugin) {
+    public TopCommand(CurrenciesPlugin plugin) {
         super(plugin);
     }
 
@@ -20,8 +21,7 @@ public class TopCommand extends MoneyCommand {
         int rank = 1;
         for (Account account : services.getRanking(10)) {
             sender.sendMessage("§f  " + rank + ". §7"
-                    + account.getPrefix()
-                    + account.getName()
+                    + Bukkit.getPlayer(account.getName()).getDisplayName()
                     + " §7(" + account.getFormatedBalance() + ")");
             rank++;
         }

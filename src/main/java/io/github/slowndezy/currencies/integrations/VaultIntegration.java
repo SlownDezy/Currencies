@@ -1,10 +1,10 @@
-package net.vorium.currencies.integrations;
+package io.github.slowndezy.currencies.integrations;
 
+import io.github.slowndezy.currencies.entities.Account;
+import io.github.slowndezy.currencies.entities.services.AccountServices;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.vorium.currencies.Main;
-import net.vorium.currencies.entities.Account;
-import net.vorium.currencies.entities.services.AccountServices;
+import io.github.slowndezy.currencies.CurrenciesPlugin;
 import org.bukkit.OfflinePlayer;
 
 import java.text.NumberFormat;
@@ -14,10 +14,10 @@ import java.util.Locale;
 
 public class VaultIntegration implements Economy {
 
-    private final Main plugin;
+    private final CurrenciesPlugin plugin;
     private final AccountServices services;
 
-    public VaultIntegration(Main plugin) {
+    public VaultIntegration(CurrenciesPlugin plugin) {
         this.plugin = plugin;
         this.services = plugin.getAccountServices();
     }

@@ -1,18 +1,18 @@
-package net.vorium.currencies.command.subcommands;
+package io.github.slowndezy.currencies.command.subcommands;
 
+import io.github.slowndezy.currencies.entities.Account;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
-import net.vorium.currencies.Main;
-import net.vorium.currencies.command.MoneyCommand;
-import net.vorium.currencies.entities.Account;
-import net.vorium.currencies.events.MoneyUpdateEvent;
+import io.github.slowndezy.currencies.CurrenciesPlugin;
+import io.github.slowndezy.currencies.command.MoneyCommand;
+import io.github.slowndezy.currencies.events.MoneyUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class RemoveCommand extends MoneyCommand {
 
-    public RemoveCommand(Main plugin) {
+    public RemoveCommand(CurrenciesPlugin plugin) {
         super(plugin);
     }
 
@@ -29,9 +29,12 @@ public class RemoveCommand extends MoneyCommand {
             sender.sendMessage("§cInsira um número válido.");
             return;
         }
-        targetAccount.withdraw(amount);
-        Bukkit.getPluginManager().callEvent(new MoneyUpdateEvent(target, MoneyUpdateEvent.UpdateType.SET, amount));
-        sender.sendMessage("§eVocê removeu §a" + format.format(amount) + " §ecoins da conta de " + targetAccount.getPrefix() + targetAccount.getName());
+        MoneyUpdateEvent moneyUpdateEvent = new MoneyUpdateEvent(target, MoneyUpdateEvent.UpdateType.WITHDRAW, amount);
+        Bukkit.getPluginManager().callEvent(moneyUpdateEvent);
 
+        if (!moneyUpdateEvent.isCancelled()) {
+            targetAccount.withdraw(amount);
+            sender.sendMessage("§eVocê removeu §a" + format.format(amount) + " §ecoins da conta de " + targetAccount.getName());
+        }
     }
 }

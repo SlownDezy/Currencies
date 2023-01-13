@@ -1,18 +1,18 @@
-package net.vorium.currencies.command.subcommands;
+package io.github.slowndezy.currencies.command.subcommands;
 
+import io.github.slowndezy.currencies.entities.Account;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
-import net.vorium.currencies.Main;
-import net.vorium.currencies.command.MoneyCommand;
-import net.vorium.currencies.entities.Account;
-import net.vorium.currencies.events.MoneyUpdateEvent;
+import io.github.slowndezy.currencies.CurrenciesPlugin;
+import io.github.slowndezy.currencies.command.MoneyCommand;
+import io.github.slowndezy.currencies.events.MoneyUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AddCommand extends MoneyCommand {
 
-    public AddCommand(Main plugin) {
+    public AddCommand(CurrenciesPlugin plugin) {
         super(plugin);
     }
 
@@ -30,8 +30,13 @@ public class AddCommand extends MoneyCommand {
             return;
         }
 
-        targetAccount.deposit(amount);
-        Bukkit.getPluginManager().callEvent(new MoneyUpdateEvent(target, MoneyUpdateEvent.UpdateType.SET, amount));
-        sender.sendMessage("§eVocê adicionou §a" + format.format(amount) + " §ecoins na conta de " + targetAccount.getPrefix() + targetAccount.getName());
+
+        MoneyUpdateEvent moneyUpdateEvent = new MoneyUpdateEvent(target, MoneyUpdateEvent.UpdateType.ADD, amount);
+        Bukkit.getPluginManager().callEvent(moneyUpdateEvent);
+
+        if (!moneyUpdateEvent.isCancelled()) {
+            targetAccount.deposit(amount);
+            sender.sendMessage("§eVocê adicionou §a" + format.format(amount) + " §ecoins na conta de " + targetAccount.getName());
+        }
     }
 }
