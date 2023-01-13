@@ -1,2 +1,2 @@
 # Currencies
-A economy plugin
+A simple economy plugin
