@@ -1,14 +1,11 @@
 package io.github.slowndezy.currencies.storarge.dao;
 
 import com.google.common.collect.Sets;
+import io.github.slowndezy.currencies.CurrenciesPlugin;
 import io.github.slowndezy.currencies.entities.Account;
 import io.github.slowndezy.currencies.storarge.Database;
-import io.github.slowndezy.currencies.CurrenciesPlugin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,12 +18,16 @@ public class AccountDao {
     }
 
     public void createTable() {
-        try (Connection connection = database.getDataSource().getConnection()) {
-            connection.prepareStatement(String.format(
-                    "CREATE TABLE IF NOT EXISTS %s (username VARCHAR(16) NOT NULL PRIMARY KEY, coins DOUBLE NOT NULL);", database.getTable()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        CompletableFuture.runAsync(() -> {
+            try (Connection connection = database.getDataSource().getConnection()) {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate(String.format(
+                        "CREATE TABLE IF NOT EXISTS %s (username VARCHAR(16) NOT NULL PRIMARY KEY, coins DOUBLE NOT NULL);", database.getTable()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     public CompletableFuture<Account> findByName(String name) {
@@ -70,8 +71,8 @@ public class AccountDao {
         });
     }
 
-    public CompletableFuture<Void> insert(Account account) {
-        return CompletableFuture.supplyAsync(() -> {
+    public void insert(Account account) {
+        CompletableFuture.runAsync(() -> {
             try (Connection connection = database.getDataSource().getConnection()) {
                 PreparedStatement statement = connection.prepareStatement(String.format(
                         "INSERT INTO %s VALUES(?,?)", database.getTable()));
@@ -80,12 +81,11 @@ public class AccountDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return null;
         });
     }
 
-    public CompletableFuture<Void> update(Account account) {
-        return CompletableFuture.supplyAsync(() -> {
+    public void update(Account account) {
+        CompletableFuture.runAsync(() -> {
             try (Connection connection = database.getDataSource().getConnection()) {
                 PreparedStatement statement = connection.prepareStatement(String.format(
                         "REPLACE INTO %s VALUES(?, ?)", database.getTable()));
@@ -94,7 +94,6 @@ public class AccountDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return null;
         });
     }
 }
